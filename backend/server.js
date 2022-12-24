@@ -14,6 +14,7 @@ app.use(express.json()) // to allow for receiving of json body from call
 app.use(express.urlencoded({ extended: false })) // to allow for receiving of urlencoded body from call
 
 app.use('/api/goals', require('./routes/goalRoutes'))
+app.use('/api/users', require('./routes/userRoutes'))
 app.use(errorHandler)
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
