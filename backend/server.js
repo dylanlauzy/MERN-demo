@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false })) // to allow for receiving of ur
 app.use('/api/goals', require('./routes/goalRoutes'))
 app.use('/api/users', require('./routes/userRoutes'))
 
-// Serving the frontend
+// Serve the frontend
 if(process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')))
   app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')))
