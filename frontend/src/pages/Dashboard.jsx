@@ -3,8 +3,9 @@ import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import GoalForm from '../components/GoalForm'
 import Spinner from '../components/Spinner'
+import GoalItem from '../components/GoalItem'
 import { getGoals, reset } from '../features/goals/goalSlice'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -14,16 +15,20 @@ function Dashboard() {
   const {goals, isLoading, isError, message} = useSelector((state) => state.goals)
 
   useEffect(() => {
-    if(!user) {
-      navigate('/login')
-    }
-    
     if(isError) {
       toast.error(message)
     }
-    
-    dispatch(getGoals())
+
+    if(!user) {
+      navigate('/login')
+    }
   }, [user, navigate, isError, message])
+
+  useEffect(() => {
+    dispatch(getGoals());
+
+    return () => dispatch(reset());
+  }, [dispatch]);
 
   if(isLoading) {
     return <Spinner />
@@ -37,6 +42,16 @@ function Dashboard() {
       </section>
 
       <GoalForm />
+
+      <section className="content">
+        {goals.length > 0 ? (
+          <div className="goals">
+            {goals.map((goal) => (
+              <GoalItem key={goal._id} goal={goal} />
+            ))}
+          </div>
+        ) : (<h3>You have not set any goals</h3>)}
+      </section>
     </>
   )
 }
